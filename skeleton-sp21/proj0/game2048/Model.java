@@ -144,11 +144,86 @@ public class Model extends Observable {
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
 
+        board.setViewingPerspective(side);
+
+        for (int col = 0; col < board.size(); col++) {
+            if (tiltColumn(col)) {
+                changed = true;
+            }
+        }
+
         checkGameOver();
         if (changed) {
             setChanged();
         }
+
+        board.setViewingPerspective(Side.NORTH);
+
         return changed;
+    }
+
+    private boolean tiltColumn(int col) {
+        boolean tilted = false;
+
+        int maxRow = board.size() - 1;
+
+        for (int row = board.size() - 1; row >= 0; row--) {
+            Tile tile = board.tile(col, row);
+            if (tile == null) {
+                continue;
+            }
+
+            if (row == board.size() - 1) {
+                continue;
+            }
+
+            maxRow = movementChecker(row, col, tile, maxRow);
+
+            tilted = true;
+        }
+        return tilted;
+    }
+
+    private int movementChecker(int row, int col, Tile tile, int maxRow) {
+        // Tile row2 is the first
+        // Tile row1 is the second
+        // Tile row0 is the third
+        for (int i = row + 1; i < board.size(); i++) {
+
+            int aboveRow = row + 1;
+            Tile tileAbove = board.tile(col, aboveRow);
+
+            if (tileAbove == null && aboveRow == maxRow) {
+                board.move(col, aboveRow, tile);
+                break;
+            }
+
+            if (tileAbove == null) {
+                for (int j = aboveRow + 1; j <= maxRow; j++) {
+                    tileAbove = board.tile(col, j);
+
+                    if (tileAbove == null) {
+                        aboveRow = j;
+                        continue;
+                    }
+
+                    if (tileAbove.value() == tile.value()) {
+                        board.move(col, j, tile);
+                        score += tileAbove.next().value();
+                        return j - 1;
+                    }
+                }
+                board.move(col, aboveRow, tile);
+                break;
+            }
+
+            if (tileAbove.value() == tile.value()) {
+                board.move(col, aboveRow, tile);
+                score += tileAbove.next().value();
+                return row;
+            }
+        }
+        return maxRow;
     }
 
     /**
@@ -240,8 +315,7 @@ public class Model extends Observable {
 
 
     @Override
-    /** Returns the model as a string, used for debugging. */
-    public String toString() {
+    /** Returns the model as a string, used for debugging. */ public String toString() {
         Formatter out = new Formatter();
         out.format("%n[%n");
         for (int row = size() - 1; row >= 0; row -= 1) {
@@ -260,8 +334,7 @@ public class Model extends Observable {
     }
 
     @Override
-    /** Returns whether two models are equal. */
-    public boolean equals(Object o) {
+    /** Returns whether two models are equal. */ public boolean equals(Object o) {
         if (o == null) {
             return false;
         } else if (getClass() != o.getClass()) {
@@ -272,8 +345,7 @@ public class Model extends Observable {
     }
 
     @Override
-    /** Returns hash code of Model’s string. */
-    public int hashCode() {
+    /** Returns hash code of Model’s string. */ public int hashCode() {
         return toString().hashCode();
     }
 }
