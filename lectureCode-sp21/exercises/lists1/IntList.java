@@ -9,17 +9,46 @@ public class IntList {
 
 	/** Return the size of the list using... recursion! */
 	public int size() {
-		return 0;
+		if(this.rest == null){
+			return 1;
+		}
+
+		return 1 + this.rest.size();
 	}
 
 	/** Return the size of the list using no recursion! */
 	public int iterativeSize() {
-		return 0;
+		IntList list = this;
+		int size = 0;
+
+		while(list != null){
+			size += 1;
+			list = list.rest;
+		}
+
+		return size;
 	}
 
 	/** Returns the ith value in this list.*/
 	public int get(int i) {
-		return 0;
+		if(i == 0){
+			return this.first;
+		}
+
+		return this.rest.get(i - 1);
+	}
+
+	/** Returns the ith value in this list.*/
+	public int getIterativeSize(int i) {
+		IntList valueList = this;
+
+		for(int j = 0; j < i; j++){
+			valueList = valueList.rest;
+		}
+
+		int value = valueList.first;
+
+		return value;
 	}
 
 	public static void main(String[] args) {
@@ -27,6 +56,9 @@ public class IntList {
 		L = new IntList(10, L);
 		L = new IntList(5, L);
 
-		System.out.println(L.iterativeSize());
+		System.out.printf("Size is: %d\n", L.size());
+		System.out.printf("Iterative size is: %d\n", L.iterativeSize());
+		System.out.printf("Value %d is: %d\n",1, L.get(1));
+		System.out.printf("Iterative value %d is: %d\n",1,  L.getIterativeSize(1));
 	}
 } 
