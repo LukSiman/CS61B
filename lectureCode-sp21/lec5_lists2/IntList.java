@@ -48,18 +48,35 @@ public class IntList {
                 p.first *= 2;
                 p.rest = p.rest.rest;
             }
-            if(p.first != p.rest.first){
+            if (p.first != p.rest.first) {
                 p = p.rest;
             }
         }
     }
 
+    public static void addLastSquare(int f, IntList L) {
+        IntList p = L;
+
+        while(p.rest != null){
+            IntList temp = p.rest;
+            p.rest = new IntList(p.first*p.first, null);
+            p = p.rest;
+            p.rest = temp;
+            p = p.rest;
+        }
+
+        p.rest = new IntList(p.first*p.first, null);
+        p = p.rest;
+        p.rest = new IntList(f, null);
+    }
+
     public static void main(String[] args) {
-        IntList L = new IntList(3, null);
-        L = new IntList(2, L);
-        L = new IntList(1, L);
-        L = new IntList(1, L);
-        L.addAdjacent();
+        IntList L = new IntList(1, null);
+        L.rest = new IntList(2, null);
+//        L = new IntList(5, L);
+//        addLastSquare(2, L);
+        addLastSquare(5, L);
+        addLastSquare(7, L);
         System.out.println(L.size());
     }
 } 
