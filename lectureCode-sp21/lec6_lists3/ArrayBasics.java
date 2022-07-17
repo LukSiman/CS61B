@@ -1,5 +1,3 @@
-package lec6_lists3;
-
 /** ArrayBasics
  *  @author Josh Hug
  */
