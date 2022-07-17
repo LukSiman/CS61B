@@ -70,7 +70,7 @@ public class AListTest {
         }
     }
 
-    public static void main(String[] args) {
-        jh61b.junit.TestRunner.runTests("all", AListTest.class);
-    }
+//    public static void main(String[] args) {
+//        junit.TestRunner.runTests("all", AListTest.class);
+//    }
 } 
