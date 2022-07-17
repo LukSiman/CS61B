@@ -2,18 +2,18 @@
  *  @author Josh Hug
  */
 
-public class AList {
-    private int[] items;
+public class AList<Item> {
+    private Item[] items;
     private int size;
 
     /** Creates an empty list. */
     public AList() {
-        items = new int[100];
+        items = (Item[]) new Object[100];
         size = 0;
     }
 
     /** Inserts X into the back of the list. */
-    public void addLast(int x) {
+    public void addLast(Item x) {
         if(size == items.length){
             increaseSizeOfArray();
         }
@@ -22,7 +22,7 @@ public class AList {
     }
 
     private void increaseSizeOfArray(){
-        int[] biggerItems = new int[items.length*2];
+        Item[] biggerItems = (Item[]) new Object[items.length*2];
 
         for(int i = 0; i<items.length; i++){
             biggerItems[i] = items[i];
@@ -32,11 +32,11 @@ public class AList {
     }
 
     /** Returns the item from the back of the list. */
-    public int getLast() {
+    public Item getLast() {
         return items[size-1];
     }
     /** Gets the ith item in the list (0 is the front). */
-    public int get(int i) {
+    public Item get(int i) {
         return items[i];
     }
 
@@ -47,8 +47,9 @@ public class AList {
 
     /** Deletes item from back of the list and
       * returns deleted item. */
-    public int removeLast() {
-        int deletedItem = getLast();
+    public Item removeLast() {
+        Item deletedItem = getLast();
+        items[size-1] = null;
         size--;
 
         return deletedItem;
